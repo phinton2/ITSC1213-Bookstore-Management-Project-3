@@ -18,8 +18,8 @@ public class CD extends Inventory implements prodDisplay {
     public CD () {
         super();
     }
-    public CD(int stockSize, double productPrice) {
-        super(stockSize, productPrice);
+    public CD(int productID, String itemType, String title, String authorArtist, int stockSize, double productPrice) {
+        super(productID, itemType, title, authorArtist, stockSize, productPrice);
     }
 
     public void productDisplay () {
