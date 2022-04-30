@@ -18,8 +18,8 @@ public class DVD extends Inventory implements prodDisplay {
     public DVD () {
         super();
     }
-    public DVD(int stockSize, double productPrice) {
-        super(stockSize, productPrice);
+    public DVD(int productID, String itemType, String title, String authorArtist, int stockSize, double productPrice) {
+        super(productID, itemType, title, authorArtist, stockSize, productPrice);
     }
 
     public void productDisplay () {
