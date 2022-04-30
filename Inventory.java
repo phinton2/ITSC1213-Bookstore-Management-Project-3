@@ -4,6 +4,7 @@
  */
 package bookstoremanagementproject2;
 
+
 /**
  *
  * @author Paydreanne E. Hinton
@@ -17,16 +18,47 @@ interface prodDisplay {
 }
 
 public abstract class Inventory {
+    // omitted randomizers
+    /*
     protected int stockSize = ((int)(5 + Math.random() * 15));
     protected double productPrice = ((double)(8 + Math.random() * 20));
+    protected double totalProductPrice;*/
+    protected int productID;
+    protected String itemType;
+    protected String title;
+    protected String authorArtist;
+    protected int stockSize;
+    protected double productPrice;
     protected double totalProductPrice;
+    
 
     public Inventory() {}
-    public Inventory(int stockSize, double productPrice) {
+    public Inventory(int productID, String itemType, String title, String authorArtist, int stockSize, double productPrice) {
+        this.productID = productID;
+        this.itemType = itemType;
+        this.title = title;
+        this.authorArtist = authorArtist;
         this.stockSize = stockSize;
         this.productPrice = productPrice;
     }
-
+    public int getProductID() {
+        return productID;
+    }
+    public void setProductID (int productID) {
+        this.productID = productID;
+    }
+    public String itemType() {
+        return itemType;
+    }
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public void setAuthorArtist (String authorArtist) {
+        this.authorArtist = authorArtist;
+    }
     public int getStockSize() {
         return stockSize;
     }
@@ -49,4 +81,3 @@ public abstract class Inventory {
         return totalProductPrice;
     }
 }
-
