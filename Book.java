@@ -19,13 +19,15 @@ public class Book extends Inventory implements prodDisplay {
     public Book () {
         super();
     }
-    public Book(int stockSize, double productPrice) {
-        super(stockSize, productPrice);
+    public Book(int productID, String itemType, String title, String authorArtist, int stockSize, double productPrice) {
+        super(productID, itemType, title, authorArtist, stockSize, productPrice);
     }
 
     public void productDisplay () {
-        String prodPrice = "Books cost $" + df.format(this.getProductPrice());
-        String stoSize = "\nThere are currently " + this.getStockSize() + " books available";
-        System.out.println(prodPrice + stoSize);
+        System.out.println("=====================================================\n");
+        System.out.println("\"" + title + "\" by " + authorArtist);
+        System.out.println("Product ID: " + productID + "\t\t\t" + "Item Type: " + itemType);
+        System.out.println("Copies available: " + stockSize + "\t\t" + "Price: " + productPrice +"\n");
+        System.out.println("=====================================================");
     }
 }
