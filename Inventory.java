@@ -56,6 +56,9 @@ public abstract class Inventory {
     public String getTitle() {
         return title;
     }
+    public void setTitle(String title) {
+        this.title = title;
+    }
     public void setAuthorArtist (String authorArtist) {
         this.authorArtist = authorArtist;
     }
