@@ -12,21 +12,92 @@ package bookstoremanagementproject2;
  * Bookstore Management Project 2
  * Executes main program for bookstore management system
  */
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.text.*;
 
 public class BookstoreManagementProject2 {
-    public static void main (String[] args) {
+    public static void main (String[] args) throws FileNotFoundException {
         boolean isRunning = true;
         DecimalFormat df = new DecimalFormat("#.##");
         Regular r = null;
         Premium p = null;
         double bookstoreBalance = 0;
         ArrayList<Membership> memberList = new ArrayList(); // contains list of premium/regular members
+        ArrayList<Book> bookList = new ArrayList<>();
+        ArrayList<CD> cdList = new ArrayList<>();
+        ArrayList<DVD> dvdList = new ArrayList<>();
+
+
         Book book = new Book();
         CD cd = new CD();
         DVD dvd = new DVD();
         Scanner scnr = new Scanner(System.in);
+
+        // Set stock size and pricing
+        // PROJECT 3 START
+        String line;
+        File file = new File("ProductInventory-1.csv");
+        Scanner in = null;
+        // try {
+            in = new Scanner(file);
+            while(in.hasNext())
+            {
+                line=in.nextLine();
+                if(line.contains("book")) { // if line contains book
+                    String[] details = line.split(",");
+
+                    // variables
+                    int productID = Integer.parseInt(details[0]); 
+                    String itemType = details[1]; 
+                    String title = details[2]; 
+                    String authorArtist = details[3]; 
+                    int stockSize = Integer.parseInt(details[4]); 
+                    double productPrice = Double.parseDouble(details[5]);
+
+                    // object
+                    Book bookz = new Book(productID, itemType, title, authorArtist, stockSize, productPrice);
+                    bookList.add(bookz);
+                    bookz.productDisplay(); 
+                }
+                else if(line.contains("cd")) { // if line contains book
+
+                    String[] details = line.split(",");
+
+                    // variables
+                    int productID = Integer.parseInt(details[0]); 
+                    String itemType = details[1]; 
+                    String title = details[2]; 
+                    String authorArtist = details[3]; 
+                    int stockSize = Integer.parseInt(details[4]); 
+                    double productPrice = Double.parseDouble(details[5]);
+
+                    // object
+                    CD cdz = new CD(productID, itemType, title, authorArtist, stockSize, productPrice);
+                    cdList.add(cdz);
+                    cdz.productDisplay(); 
+                }
+                else if(line.contains("dvd")) { // if line contains book
+
+                    String[] details = line.split(",");
+
+                    // variables
+                    int productID = Integer.parseInt(details[0]); 
+                    String itemType = details[1]; 
+                    String title = details[2]; 
+                    String authorArtist = details[3]; 
+                    int stockSize = Integer.parseInt(details[4]); 
+                    double productPrice = Double.parseDouble(details[5]);
+
+                    // object
+                    DVD dvdz = new DVD(productID, itemType, title, authorArtist, stockSize, productPrice);
+                    dvdList.add(dvdz);
+                    dvdz.productDisplay(); 
+                }
+            }
+        //} catch (Exception e) {}
+        
 
         while (isRunning) {
             // see what user wants to do
@@ -380,6 +451,7 @@ public class BookstoreManagementProject2 {
                 choiceComplete = true;
             }
 
+
             while (choice == 2 && !choiceComplete) {
                 /*====================================
                      VIEW ALL MEMBERS INFORMATION
@@ -431,9 +503,14 @@ public class BookstoreManagementProject2 {
                 System.out.println("=====================================");
                 System.out.println("     STORE INVENTORY & PRICING");
                 System.out.println("=====================================");
+                /*
                 book.productDisplay();
                 cd.productDisplay();
                 dvd.productDisplay();
+                */
+                for (int i = 0; i < bookList.size(); i++) {bookList.get(i).productDisplay();}
+                for (int i = 0; i < cdList.size(); i++) {cdList.get(i).productDisplay();}
+                for (int i = 0; i < dvdList.size(); i++) {dvdList.get(i).productDisplay();}
                 choiceComplete = true;
             }
             
@@ -448,6 +525,7 @@ public class BookstoreManagementProject2 {
                 /*====================================
                             EXIT PROGRAM
                 ====================================*/
+                scnr.close();
                 System.exit(0);
             }
         }
