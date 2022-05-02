@@ -23,9 +23,11 @@ public class DVD extends Inventory implements prodDisplay {
     }
 
     public void productDisplay () {
-        String prodPrice = "DVDs cost $" + df.format(this.getProductPrice());
-        String stoSize = "\nThere are currently " + this.getStockSize() + " DVDs available";
-        System.out.println(prodPrice + stoSize);
+        System.out.println("=====================================================\n");
+        System.out.println("\"" + title + "\" by " + authorArtist);
+        System.out.println("Product ID: " + productID + "\t\t\t" + "Item Type: " + itemType);
+        System.out.println("Copies available: " + stockSize + "\t\t" + "Price: " + productPrice +"\n");
+        System.out.println("=====================================================");
     }
 }
 
