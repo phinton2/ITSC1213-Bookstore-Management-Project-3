@@ -23,7 +23,7 @@
                     System.out.println("book");
                 }
                 else if (line.contains("cd")) {
-                    ArrayList<Book> cdList = new ArrayList<>();
+                    ArrayList<CD> cdList = new ArrayList<>();
                     String details[] = line.split(",");
 
                     // variables
@@ -35,12 +35,12 @@
                     double productPrice = Double.parseDouble(details[5]);
 
                     // object
-                    CD iAmCD = new Book(productID, itemType, title, authorArtist, stockSize, productPrice);
+                    CD iAmCD = new CD(productID, itemType, title, authorArtist, stockSize, productPrice);
                     cdList.add(iAmCD);
                     iAmCD.productDisplay();// remove if not in the view inventory section of program
                 }
                 else if (line.contains("dvd")) {
-                    ArrayList<Book> dvdList = new ArrayList<>();
+                    ArrayList<DVD> dvdList = new ArrayList<>();
                     String details[] = line.split(",");
 
                     // variables
@@ -52,7 +52,7 @@
                     double productPrice = Double.parseDouble(details[5]);
 
                     // object
-                    DVD iAmDVD = new Book(productID, itemType, title, authorArtist, stockSize, productPrice);
+                    DVD iAmDVD = new DVD(productID, itemType, title, authorArtist, stockSize, productPrice);
                     dvdList.add(iAmDVD);
                     iAmDVD.productDisplay();// remove if not in the view inventory section of program
                 }
