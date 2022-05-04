@@ -34,8 +34,10 @@ public class BookstoreManagementProject2 {
         ArrayList<Book> bookList = new ArrayList<>();
         ArrayList<CD> cdList = new ArrayList<>();
         ArrayList<DVD> dvdList = new ArrayList<>();
-        ArrayList<Double> pricingOrderList = new ArrayList<>();
-        ArrayList<String> orderList = new ArrayList<>();
+        ArrayList<Double> pricingOrderList = new ArrayList<>(); // will omit
+        ArrayList<String> orderList = new ArrayList<>(); // will omit
+        ArrayList<Integer> idPurchase = new ArrayList<>();
+        ArrayList<Integer> purchaseQTY = new ArrayList<>();
 
 
         Book book = new Book();
@@ -151,7 +153,7 @@ public class BookstoreManagementProject2 {
                     
 
                     // adds member information to bookstore member listing
-                    Regular regMem = new Regular(firstName, lastName, 0, payMethod, false, false);                
+                    Regular regMem = new Regular(firstName, lastName, 0, payMethod, false, false,idPurchase,purchaseQTY);                
                     memberList.add(regMem);
                     r = regMem;
 
