@@ -38,10 +38,8 @@ public class BookstoreManagementProject2 {
         ArrayList<Book> bookList = new ArrayList<>();
         ArrayList<CD> cdList = new ArrayList<>();
         ArrayList<DVD> dvdList = new ArrayList<>();
-        ArrayList<Double> pricingOrderList = new ArrayList<>(); // will omit
-        ArrayList<String> orderList = new ArrayList<>(); // will omit
-        ArrayList<Double> priceOrderList = new ArrayList<>(); // will omit
-        ArrayList<String> ordList = new ArrayList<>();
+        ArrayList<Double> pricingOrderList = new ArrayList<>();
+        ArrayList<String> orderList = new ArrayList<>();
         ArrayList<Integer> idPurchase = new ArrayList<>();
         ArrayList<Integer> purchaseQTY = new ArrayList<>();
 
@@ -173,7 +171,7 @@ public class BookstoreManagementProject2 {
                     System.out.println("Enter number beside the product to purchase");
                     int purchaseChoice = scnr.nextInt();
                     
-                    if (purchaseChoice >= 0 && purchaseChoice <= 10){ // WHEN PURCHASING BOOK
+                    if ((purchaseChoice >= 0 && purchaseChoice < 10)){ // WHEN PURCHASING BOOK
                         System.out.println("How many copies of \"" + bookList.get(purchaseChoice).getTitle() + "\" would you like?");
                         int purchaseQuantity = scnr.nextInt();
 
@@ -210,7 +208,13 @@ public class BookstoreManagementProject2 {
                             System.out.println("\nWe're sorry, \"" + bookList.get(purchaseChoice).getTitle() + "\" is currently out of stock.");
                         }
                         }
-                    else if (purchaseChoice >= 11 && purchaseChoice <= 13){ // WHEN PURCHASING CD
+                    else if (purchaseChoice >= 10 && purchaseChoice <= 12){ // WHEN PURCHASING CD
+                        if (purchaseChoice == 10)
+                        purchaseChoice = 0;
+                        else if (purchaseChoice == 11)
+                        purchaseChoice = 1;
+                        else if (purchaseChoice == 12)
+                        purchaseChoice = 2;
                         System.out.println("How many copies of \"" + cdList.get(purchaseChoice).getTitle() + "\" would you like?");
                         int purchaseQuantity = scnr.nextInt();
 
@@ -247,7 +251,11 @@ public class BookstoreManagementProject2 {
                             System.out.println("\nWe're sorry, \"" + cdList.get(purchaseChoice).getTitle() + "\" is currently out of stock.");
                         }
                     }
-                    else if (purchaseChoice >= 14 && purchaseChoice <= 15) { // WHEN PURCHASING DVD
+                    else if (purchaseChoice == 13 || purchaseChoice == 14) { // WHEN PURCHASING DVD
+                        if (purchaseChoice == 13)
+                        purchaseChoice = 0;
+                        else if (purchaseChoice == 14)
+                        purchaseChoice = 1;
                         System.out.println("How many copies of \"" + dvdList.get(purchaseChoice).getTitle() + "\" would you like?");
                         int purchaseQuantity = scnr.nextInt();
 
