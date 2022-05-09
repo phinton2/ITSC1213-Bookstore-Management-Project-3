@@ -11,20 +11,24 @@ package bookstoremanagementproject2;
 /**
  *
  * @author Paydreanne E. Hinton
- * instructor Professor Van Custodio
+ * instructor Nadia Najjar
  * courseSection ITSC1213-106-27949
- * Bookstore Management Project 2
+ * Bookstore Management Project 3
  * Executes main program for bookstore management system
  */
 
-
+import java.io.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintStream;
 import java.util.*;
 import java.text.*;
 
 public class BookstoreManagementProject2 {
-    public static void main (String[] args) throws FileNotFoundException {
+    public static void main (String[] args) throws FileNotFoundException , IOException {
         boolean isRunning = true;
         DecimalFormat df = new DecimalFormat("#.##");
         Regular r = null;
@@ -36,6 +40,8 @@ public class BookstoreManagementProject2 {
         ArrayList<DVD> dvdList = new ArrayList<>();
         ArrayList<Double> pricingOrderList = new ArrayList<>(); // will omit
         ArrayList<String> orderList = new ArrayList<>(); // will omit
+        ArrayList<Double> priceOrderList = new ArrayList<>(); // will omit
+        ArrayList<String> ordList = new ArrayList<>();
         ArrayList<Integer> idPurchase = new ArrayList<>();
         ArrayList<Integer> purchaseQTY = new ArrayList<>();
 
@@ -69,9 +75,8 @@ public class BookstoreManagementProject2 {
                     // object
                     Book bookz = new Book(productID, itemType, title, authorArtist, stockSize, productPrice);
                     bookList.add(bookz);
-                    // bookz.productDisplay(); 
                 }
-                else if(line.contains("cd")) { // if line contains book
+                else if(line.contains("cd")) { // if line contains cd
 
                     String[] details = line.split(",");
 
@@ -86,9 +91,8 @@ public class BookstoreManagementProject2 {
                     // object
                     CD cdz = new CD(productID, itemType, title, authorArtist, stockSize, productPrice);
                     cdList.add(cdz);
-                    // cdz.productDisplay(); 
                 }
-                else if(line.contains("dvd")) { // if line contains book
+                else if(line.contains("dvd")) { // if line contains dvdd
 
                     String[] details = line.split(",");
 
@@ -103,11 +107,8 @@ public class BookstoreManagementProject2 {
                     // object
                     DVD dvdz = new DVD(productID, itemType, title, authorArtist, stockSize, productPrice);
                     dvdList.add(dvdz);
-                    // dvdz.productDisplay(); 
                 }
-            }
-        //} catch (Exception e) {}
-        
+            }        
 
         while (isRunning) {
             // see what user wants to do
@@ -153,7 +154,7 @@ public class BookstoreManagementProject2 {
                     
 
                     // adds member information to bookstore member listing
-                    Regular regMem = new Regular(firstName, lastName, 0, payMethod, false, false,idPurchase,purchaseQTY);                
+                    Regular regMem = new Regular(firstName, lastName, 0, payMethod, false, false,pricingOrderList, orderList);                
                     memberList.add(regMem);
                     r = regMem;
 
@@ -183,6 +184,9 @@ public class BookstoreManagementProject2 {
                                 purchaseQuantity = bookList.get(purchaseChoice).getStockSize();
                                 bookList.get(purchaseChoice).setStockSize(purchaseChoice);
                                 pricingOrderList.add((bookList.get(purchaseChoice).getProductPrice() * purchaseQuantity));
+                                idPurchase.add(purchaseChoice);
+                                purchaseQTY.add(purchaseQuantity);
+                                r.orderList.add(purchaseQuantity + " \"" + bookList.get(purchaseChoice).getTitle() + "\"\t\t\t" + "\n");
                                 orderList.add(purchaseQuantity + " \"" + bookList.get(purchaseChoice).getTitle() + "\"\t\t\t" + "\n");
                             }
                             else if (bookList.get(purchaseChoice).getStockSize() == 0) {
@@ -196,7 +200,10 @@ public class BookstoreManagementProject2 {
                             bookList.get(purchaseChoice).deductStockSize(purchaseQuantity);
                             bookList.get(purchaseChoice).setTotalPurchasePrice(purchaseQuantity);
                             orderList.add(purchaseQuantity + " " + bookList.get(purchaseChoice).getTitle() + "\t\t\t");
+                            r.orderList.add(purchaseQuantity + " \"" + bookList.get(purchaseChoice).getTitle() + "\"\t\t\t" + "\n");
                             pricingOrderList.add((bookList.get(purchaseChoice).getProductPrice() * purchaseQuantity));
+                            idPurchase.add(purchaseChoice);
+                            purchaseQTY.add(purchaseQuantity);
                         }
                         else if (bookList.get(purchaseChoice).getStockSize() == 0) {
                             purchaseQuantity = 0;
@@ -214,7 +221,10 @@ public class BookstoreManagementProject2 {
                                 purchaseQuantity = cdList.get(purchaseChoice).getStockSize();
                                 cdList.get(purchaseChoice).setStockSize(purchaseChoice);
                                 pricingOrderList.add((cdList.get(purchaseChoice).getProductPrice() * purchaseQuantity));
+                                idPurchase.add(purchaseChoice);
+                                purchaseQTY.add(purchaseQuantity);
                                 orderList.add(purchaseQuantity + " \"" + cdList.get(purchaseChoice).getTitle() + "\"\t\t\t" + "\n");
+                                r.orderList.add(purchaseQuantity + " \"" + cdList.get(purchaseChoice).getTitle() + "\"\t\t\t" + "\n");
                             }
                             else if (cdList.get(purchaseChoice).getStockSize() == 0) {
                                 purchaseQuantity = cdList.get(0).getStockSize();
@@ -227,6 +237,9 @@ public class BookstoreManagementProject2 {
                             cdList.get(purchaseChoice).deductStockSize(purchaseQuantity);
                             cdList.get(purchaseChoice).setTotalPurchasePrice(purchaseQuantity);
                             orderList.add(purchaseQuantity + " " + cdList.get(purchaseChoice).getTitle() + "\t\t\t");
+                            r.orderList.add(purchaseQuantity + " \"" + cdList.get(purchaseChoice).getTitle() + "\"\t\t\t" + "\n");
+                            idPurchase.add(purchaseChoice);
+                            purchaseQTY.add(purchaseQuantity);
                             pricingOrderList.add((cdList.get(purchaseChoice).getProductPrice() * purchaseQuantity));
                         }
                         else if (cdList.get(purchaseChoice).getStockSize() == 0) {
@@ -245,7 +258,10 @@ public class BookstoreManagementProject2 {
                                 purchaseQuantity = dvdList.get(purchaseChoice).getStockSize();
                                 dvdList.get(purchaseChoice).setStockSize(purchaseChoice);
                                 pricingOrderList.add((dvdList.get(purchaseChoice).getProductPrice() * purchaseQuantity));
+                                idPurchase.add(purchaseChoice);
+                                purchaseQTY.add(purchaseQuantity);
                                 orderList.add(purchaseQuantity + " \"" + dvdList.get(purchaseChoice).getTitle() + "\"\t\t\t" + "\n");
+                                r.orderList.add(purchaseQuantity + " " + dvdList.get(purchaseChoice).getTitle() + "\t\t\t");
                             }
                             else if (dvdList.get(purchaseChoice).getStockSize() == 0) {
                                 purchaseQuantity = dvdList.get(0).getStockSize();
@@ -258,6 +274,9 @@ public class BookstoreManagementProject2 {
                             dvdList.get(purchaseChoice).deductStockSize(purchaseQuantity);
                             dvdList.get(purchaseChoice).setTotalPurchasePrice(purchaseQuantity);
                             orderList.add(purchaseQuantity + " " + dvdList.get(purchaseChoice).getTitle() + "\t\t\t");
+                            r.orderList.add(purchaseQuantity + " " + dvdList.get(purchaseChoice).getTitle() + "\t\t\t");
+                            idPurchase.add(purchaseChoice);
+                            purchaseQTY.add(purchaseQuantity);
                             pricingOrderList.add((dvdList.get(purchaseChoice).getProductPrice() * purchaseQuantity));
                         }
                         else if (dvdList.get(purchaseChoice).getStockSize() == 0) {
@@ -270,9 +289,7 @@ public class BookstoreManagementProject2 {
                         if (purchaseMore == 'Y' || purchaseMore == 'y') {}
                         else if (purchaseMore == 'N' || purchaseMore == 'n') {
                             System.out.println("\n\nHere is " + regMem.getFirstName() + " " + regMem.getLastName() + "'s receipt: \n");
-                            for (int i = 0; i < orderList.size(); i++) {
-                                System.out.println(orderList.get(i) + "\t\t\t\t$" + pricingOrderList.get(i));
-                            }
+                            System.out.println(r.getOrderList() + " -- $" + r.getPricingOrderList());
                             double sum = 0;
                             for(Double d : pricingOrderList)
                             sum += d;
@@ -281,6 +298,8 @@ public class BookstoreManagementProject2 {
                             System.out.println("INITIAL TOTAL \t\t\t\t$" + sum);
                             System.out.println("FINAL TOTAL (REGULAR DISCOUNT) \t\t$" + discountTotal);
                             bookstoreBalance = bookstoreBalance + discountTotal;
+                            r.orderList.clear();
+                            r.pricingOrderList.clear();
                             continueShopping = false;
                         }
                 }
@@ -317,10 +336,156 @@ public class BookstoreManagementProject2 {
                             payMethod = null;
                     }
 
-                    Premium premMem = new Premium(firstName, lastName, 0, payMethod, true, paidPremium);
+                    Premium premMem = new Premium(firstName, lastName, 0, payMethod, true, paidPremium, pricingOrderList, orderList);
                     memberList.add(premMem);
                     p = premMem;
+
+                    // Displays customer information after fulfillment
+                    System.out.println("Here's the customer's information: ");
+                    System.out.println("\nCustomer name: " + p.getFirstName() + " " + p.getLastName() + "\nPremium member? " + p.getIsPremiumMember() + "\nPaid monthly premium? " + p.getHasPaidPremium() + "\nTotal spent at bookstore: " + "$" + p.getTotalSpending() + "\nPreferred Payment Method: " + p.getPayMethod() + "\n");
+                    
+                    // DISPLAY WHAT STORE HAS ON SALE
+                    // Project 3 Starting...
+                    System.out.println("What the bookstore has on sale now: ");
+                    boolean continueShopping = true;
+                    while (continueShopping) {
+                    for (int i = 0; i < bookList.size(); i++) {System.out.println(bookList.get(i).getProductID() + ") \"" + bookList.get(i).getTitle() + "\" by " + bookList.get(i).getAuthorArtist() + " (Book) - $" + bookList.get(i).getProductPrice());}
+                    for (int i = 0; i < cdList.size(); i++) {System.out.println(cdList.get(i).getProductID() + ") \"" + cdList.get(i).getTitle() + "\" by " + cdList.get(i).getAuthorArtist()+ " (CD) - $" + cdList.get(i).getProductPrice());}
+                    for (int i = 0; i < dvdList.size(); i++) {System.out.println(dvdList.get(i).getProductID() + ") \"" + dvdList.get(i).getTitle() + "\" by " + dvdList.get(i).getAuthorArtist() + " (DVD) - $" + dvdList.get(i).getProductPrice());}
+                    System.out.println("Enter number beside the product to purchase");
+                    int purchaseChoice = scnr.nextInt();
+                    
+                    if (purchaseChoice >= 0 && purchaseChoice <= 10){ // WHEN PURCHASING BOOK
+                        System.out.println("How many copies of \"" + bookList.get(purchaseChoice).getTitle() + "\" would you like?");
+                        int purchaseQuantity = scnr.nextInt();
+
+                        if (purchaseQuantity > bookList.get(purchaseChoice).getStockSize() && bookList.get(purchaseChoice).getStockSize() != 0) {
+                            System.out.println("We only have " + bookList.get(purchaseChoice).getStockSize() + " copies of \"" + bookList.get(purchaseChoice).getTitle() + "\" available. Would you like to purchase the remaining copies? (y/n)");
+                            char purchaseRemaining = scnr.next().charAt(0);
+                            if (purchaseRemaining == 'Y' || purchaseRemaining == 'y') {
+                                purchaseQuantity = bookList.get(purchaseChoice).getStockSize();
+                                bookList.get(purchaseChoice).setStockSize(purchaseChoice);
+                                pricingOrderList.add((bookList.get(purchaseChoice).getProductPrice() * purchaseQuantity));
+                                idPurchase.add(purchaseChoice);
+                                purchaseQTY.add(purchaseQuantity);
+                                p.orderList.add(purchaseQuantity + " \"" + bookList.get(purchaseChoice).getTitle() + "\"\t\t\t" + "\n");
+                                orderList.add(purchaseQuantity + " \"" + bookList.get(purchaseChoice).getTitle() + "\"\t\t\t" + "\n");
+                            }
+                            else if (bookList.get(purchaseChoice).getStockSize() == 0) {
+                                purchaseQuantity = bookList.get(0).getStockSize();
+                            }
+                            else if (purchaseRemaining == 'N' || purchaseRemaining == 'n') {
+                                purchaseQuantity = 0;
+                            }
+                        }
+                        else if (purchaseQuantity <= bookList.get(purchaseChoice).getStockSize()) {
+                            bookList.get(purchaseChoice).deductStockSize(purchaseQuantity);
+                            bookList.get(purchaseChoice).setTotalPurchasePrice(purchaseQuantity);
+                            orderList.add(purchaseQuantity + " " + bookList.get(purchaseChoice).getTitle() + "\t\t\t");
+                            p.orderList.add(purchaseQuantity + " \"" + bookList.get(purchaseChoice).getTitle() + "\"\t\t\t" + "\n");
+                            pricingOrderList.add((bookList.get(purchaseChoice).getProductPrice() * purchaseQuantity));
+                            idPurchase.add(purchaseChoice);
+                            purchaseQTY.add(purchaseQuantity);
+                        }
+                        else if (bookList.get(purchaseChoice).getStockSize() == 0) {
+                            purchaseQuantity = 0;
+                            System.out.println("\nWe're sorry, \"" + bookList.get(purchaseChoice).getTitle() + "\" is currently out of stock.");
+                        }
+                        }
+                    else if (purchaseChoice >= 11 && purchaseChoice <= 13){ // WHEN PURCHASING CD
+                        System.out.println("How many copies of \"" + cdList.get(purchaseChoice).getTitle() + "\" would you like?");
+                        int purchaseQuantity = scnr.nextInt();
+
+                        if (purchaseQuantity > cdList.get(purchaseChoice).getStockSize() && cdList.get(purchaseChoice).getStockSize() != 0) {
+                            System.out.println("We only have " + cdList.get(purchaseChoice).getStockSize() + " copies of \"" + cdList.get(purchaseChoice).getTitle() + "\" available. Would you like to purchase the remaining copies? (y/n)");
+                            char purchaseRemaining = scnr.next().charAt(0);
+                            if (purchaseRemaining == 'Y' || purchaseRemaining == 'y') {
+                                purchaseQuantity = cdList.get(purchaseChoice).getStockSize();
+                                cdList.get(purchaseChoice).setStockSize(purchaseChoice);
+                                pricingOrderList.add((cdList.get(purchaseChoice).getProductPrice() * purchaseQuantity));
+                                idPurchase.add(purchaseChoice);
+                                purchaseQTY.add(purchaseQuantity);
+                                orderList.add(purchaseQuantity + " \"" + cdList.get(purchaseChoice).getTitle() + "\"\t\t\t" + "\n");
+                                p.orderList.add(purchaseQuantity + " \"" + cdList.get(purchaseChoice).getTitle() + "\"\t\t\t" + "\n");
+                            }
+                            else if (cdList.get(purchaseChoice).getStockSize() == 0) {
+                                purchaseQuantity = cdList.get(0).getStockSize();
+                            }
+                            else if (purchaseRemaining == 'N' || purchaseRemaining == 'n') {
+                                purchaseQuantity = 0;
+                            }
+                        }
+                        else if (purchaseQuantity <= cdList.get(purchaseChoice).getStockSize()) {
+                            cdList.get(purchaseChoice).deductStockSize(purchaseQuantity);
+                            cdList.get(purchaseChoice).setTotalPurchasePrice(purchaseQuantity);
+                            orderList.add(purchaseQuantity + " " + cdList.get(purchaseChoice).getTitle() + "\t\t\t");
+                            p.orderList.add(purchaseQuantity + " \"" + cdList.get(purchaseChoice).getTitle() + "\"\t\t\t" + "\n");
+                            idPurchase.add(purchaseChoice);
+                            purchaseQTY.add(purchaseQuantity);
+                            pricingOrderList.add((cdList.get(purchaseChoice).getProductPrice() * purchaseQuantity));
+                        }
+                        else if (cdList.get(purchaseChoice).getStockSize() == 0) {
+                            purchaseQuantity = 0;
+                            System.out.println("\nWe're sorry, \"" + cdList.get(purchaseChoice).getTitle() + "\" is currently out of stock.");
+                        }
+                    }
+                    else if (purchaseChoice >= 14 && purchaseChoice <= 15) { // WHEN PURCHASING DVD
+                        System.out.println("How many copies of \"" + dvdList.get(purchaseChoice).getTitle() + "\" would you like?");
+                        int purchaseQuantity = scnr.nextInt();
+
+                        if (purchaseQuantity > dvdList.get(purchaseChoice).getStockSize() && dvdList.get(purchaseChoice).getStockSize() != 0) {
+                            System.out.println("We only have " + dvdList.get(purchaseChoice).getStockSize() + " copies of \"" + dvdList.get(purchaseChoice).getTitle() + "\" available. Would you like to purchase the remaining copies? (y/n)");
+                            char purchaseRemaining = scnr.next().charAt(0);
+                            if (purchaseRemaining == 'Y' || purchaseRemaining == 'y') {
+                                purchaseQuantity = dvdList.get(purchaseChoice).getStockSize();
+                                dvdList.get(purchaseChoice).setStockSize(purchaseChoice);
+                                pricingOrderList.add((dvdList.get(purchaseChoice).getProductPrice() * purchaseQuantity));
+                                idPurchase.add(purchaseChoice);
+                                purchaseQTY.add(purchaseQuantity);
+                                orderList.add(purchaseQuantity + " \"" + dvdList.get(purchaseChoice).getTitle() + "\"\t\t\t" + "\n");
+                                p.orderList.add(purchaseQuantity + " " + dvdList.get(purchaseChoice).getTitle() + "\t\t\t");
+                            }
+                            else if (dvdList.get(purchaseChoice).getStockSize() == 0) {
+                                purchaseQuantity = dvdList.get(0).getStockSize();
+                            }
+                            else if (purchaseRemaining == 'N' || purchaseRemaining == 'n') {
+                                purchaseQuantity = 0;
+                            }
+                        }
+                        else if (purchaseQuantity <= dvdList.get(purchaseChoice).getStockSize()) {
+                            dvdList.get(purchaseChoice).deductStockSize(purchaseQuantity);
+                            dvdList.get(purchaseChoice).setTotalPurchasePrice(purchaseQuantity);
+                            orderList.add(purchaseQuantity + " " + dvdList.get(purchaseChoice).getTitle() + "\t\t\t");
+                            p.orderList.add(purchaseQuantity + " " + dvdList.get(purchaseChoice).getTitle() + "\t\t\t");
+                            idPurchase.add(purchaseChoice);
+                            purchaseQTY.add(purchaseQuantity);
+                            pricingOrderList.add((dvdList.get(purchaseChoice).getProductPrice() * purchaseQuantity));
+                        }
+                        else if (dvdList.get(purchaseChoice).getStockSize() == 0) {
+                            purchaseQuantity = 0;
+                            System.out.println("\nWe're sorry, \"" + dvdList.get(purchaseChoice).getTitle() + "\" is currently out of stock.");
+                        }
+                    }
+                    System.out.println("Does the customer want to purchase anything else? (y/n)");
+                        char purchaseMore = scnr.next().charAt(0);
+                        if (purchaseMore == 'Y' || purchaseMore == 'y') {}
+                        else if (purchaseMore == 'N' || purchaseMore == 'n') {
+                            System.out.println("\n\nHere is " + premMem.getFirstName() + " " + premMem.getLastName() + "'s receipt: \n");
+                            System.out.println(p.getOrderList() + " -- $" + p.getPricingOrderList());
+                            double sum = 0;
+                            for(Double d : pricingOrderList)
+                            sum += d;
+                            double discountTotal = sum * .6;
+                            p.setTotalSpending(discountTotal);
+                            System.out.println("INITIAL TOTAL \t\t\t\t$" + sum);
+                            System.out.println("FINAL TOTAL (PREMIUM DISCOUNT) \t\t$" + discountTotal);
+                            bookstoreBalance = bookstoreBalance + discountTotal;
+                            p.orderList.clear();
+                            p.pricingOrderList.clear();
+                            continueShopping = false;
+                        }
                 }
+            }
                 choiceComplete = true;
             }
 
@@ -393,10 +558,36 @@ public class BookstoreManagementProject2 {
                 /*====================================
                             EXIT PROGRAM
                 ====================================*/
-                scnr.close();
-                System.exit(0);
+                // Code below was largely sourced from: https://codingface.com/how-to-convert-csv-to-txt-in-java/
+                // Declare CSV file path as a String
+                String path = "ProductInventory-1.csv";
+                // Use File
+                file = new File(path);
+                // Use FileReader to red CSV file
+                FileReader fr = new FileReader(file);
+                // User BufferReader
+                BufferedReader br = new BufferedReader(fr);
+                line = "";
+
+                String[] tempArr;
+                // User FileWriter to write content to text file
+                FileWriter writer = new FileWriter("output.txt");
+                // Use while loop to check when file contains data
+                while ((line = br.readLine()) != null) {
+                    tempArr = line.split(",");
+                    // User for loop to iterate String Array and write data to text file
+                    for (String str : tempArr) {
+                        writer.write(str + " ");
+                    }
+                    // Write each line of CSV file to multiple lines
+                    writer.write("\n");
+                }
+                writer.close();
+                        scnr.close();
+                        System.exit(0);
             }
         }
         
     }
+    
 }
